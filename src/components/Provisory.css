@@ -1,0 +1,14 @@
+table, td, th, tfoot { border: solid 1px black;
+  padding: 5px; }
+
+th { background-color: #999; }
+
+caption { font-size: x-large; }
+
+colgroup { background: #f60; }
+
+.coluna1 { background: #f66; }
+
+.coluna2 { background: #f33; }
+
+.coluna3 { background: #f99; }
