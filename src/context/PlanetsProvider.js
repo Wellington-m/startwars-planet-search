@@ -4,14 +4,19 @@ import PlanetsContext from './PlanetsContext';
 
 function PlanetsProvider({ children }) {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState('');
+  const [filterByName, setFilterByName] = useState({ name: '' });
+  const [isFilterByName, setIsFilterByName] = useState(false);
 
   const getPlanet = async () => {
     try {
       const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/?format=json');
       const requestJson = await request.json();
       setData(
-        ...data,
+        requestJson.results,
+      );
+      setFilteredData(
         requestJson.results,
       );
     } catch (e) {
@@ -24,6 +29,12 @@ function PlanetsProvider({ children }) {
     setData,
     getPlanet,
     error,
+    filterByName,
+    setFilterByName,
+    filteredData,
+    setFilteredData,
+    isFilterByName,
+    setIsFilterByName,
   };
 
   return (

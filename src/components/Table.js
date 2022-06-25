@@ -3,21 +3,13 @@ import PlanetsContext from '../context/PlanetsContext';
 import './Provisory.css';
 
 function Table() {
-  const { data, setData } = useContext(PlanetsContext);
+  const {
+    getPlanet,
+    data,
+    isFilterByName,
+    filteredData } = useContext(PlanetsContext);
 
   useEffect(() => {
-    const getPlanet = async () => {
-      try {
-        const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-        const requestJson = await request.json();
-        setData(
-          ...data,
-          requestJson.results,
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    };
     getPlanet();
   }, []);
 
@@ -31,6 +23,13 @@ function Table() {
     finalTitles = TITLES_TO_UPPERCASE.map((title) => title.replace('_', ' '));
   }
 
+  let planets = [];
+  if (isFilterByName) {
+    planets = [...filteredData];
+  } else {
+    planets = [...data];
+  }
+
   return (
     <table>
       <thead>
@@ -41,7 +40,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { data.length > 0 && data.map((planet) => (
+        { planets.length > 0 && planets.map((planet) => (
           <tr key={ planet.name }>
             <td>{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
