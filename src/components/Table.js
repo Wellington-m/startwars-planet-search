@@ -7,7 +7,8 @@ function Table() {
     getPlanet,
     data,
     isFilterByName,
-    filteredData } = useContext(PlanetsContext);
+    filteredData,
+    isFilterByNumeric } = useContext(PlanetsContext);
 
   useEffect(() => {
     getPlanet();
@@ -24,7 +25,7 @@ function Table() {
   }
 
   let planets = [];
-  if (isFilterByName) {
+  if (isFilterByName || isFilterByNumeric) {
     planets = [...filteredData];
   } else {
     planets = [...data];
