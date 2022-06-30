@@ -9,19 +9,13 @@ function PlanetsProvider({ children }) {
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [isFilterByName, setIsFilterByName] = useState(false);
   const [isFilterByNumeric, setIsFilterByNumeric] = useState(false);
-  const [filterByNumeric, setFilterByNumeric] = useState({
-    filterByNumericValues: [
-      {
-        column: 'population',
-        comparison: 'maior que',
-        value: '0',
-      },
-    ],
-  });
-  const [listOfFilters, setListOfFilters] = useState([]);
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [columnList, setColumnList] = useState(
     ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
   );
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [value, setValue] = useState('0');
 
   const getPlanet = async () => {
     try {
@@ -49,14 +43,18 @@ function PlanetsProvider({ children }) {
     setFilteredData,
     isFilterByName,
     setIsFilterByName,
-    filterByNumeric,
-    setFilterByNumeric,
+    filterByNumericValues,
+    setFilterByNumericValues,
     isFilterByNumeric,
     setIsFilterByNumeric,
-    listOfFilters,
-    setListOfFilters,
     columnList,
     setColumnList,
+    column,
+    setColumn,
+    comparison,
+    setComparison,
+    value,
+    setValue,
   };
 
   return (

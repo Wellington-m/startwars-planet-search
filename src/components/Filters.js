@@ -8,21 +8,24 @@ function Filters() {
     setFilterByName,
     setIsFilterByName,
     setFilteredData,
-    // filteredData,
-    filterByNumeric,
-    setFilterByNumeric,
     setIsFilterByNumeric,
-    listOfFilters,
-    setListOfFilters,
+    filterByNumericValues,
+    setFilterByNumericValues,
     columnList,
     setColumnList,
+    column,
+    setColumn,
+    comparison,
+    setComparison,
+    value,
+    setValue,
     data } = useContext(PlanetsContext);
 
   useEffect(() => {
     const planetsFiltered = data
       .filter((planet) => planet.name.toLowerCase().includes(name));
 
-    const resultArray = listOfFilters.reduce((accumulator, filter) => {
+    const resultArray = filterByNumericValues.reduce((accumulator, filter) => {
       console.log('Acumulador', accumulator);
       return accumulator.filter((planet) => {
         switch (filter.comparison) {
@@ -42,29 +45,34 @@ function Filters() {
     }, planetsFiltered);
 
     setFilteredData(resultArray);
-  }, [name, listOfFilters]);
+  }, [name, filterByNumericValues]);
 
   const handleSearch = ({ target }) => {
     setIsFilterByName(true);
     setFilterByName({ name: target.value.toLowerCase() });
   };
 
-  const handleForm = ({ target }) => {
-    const { name: nameSelect, value } = target;
-    setFilterByNumeric({
-      filterByNumericValues: [{
-        ...filterByNumeric.filterByNumericValues[0],
-        [nameSelect]: value,
-      }],
-    });
-  };
-
   const filter = (element) => {
     element.preventDefault();
     setIsFilterByNumeric(true);
-    const { column, comparison, value } = filterByNumeric.filterByNumericValues[0];
-    setListOfFilters([...listOfFilters, { column, comparison, value }]);
+    const newFilter = {
+      column,
+      comparison,
+      value,
+    };
+    setFilterByNumericValues([...filterByNumericValues, newFilter]);
     setColumnList(columnList.filter((columnName) => columnName !== column));
+  };
+
+  const handleDeleteFilter = (index, valueOfColumnFilter) => {
+    setFilterByNumericValues(
+      filterByNumericValues.filter((_item, indexItem) => indexItem !== index),
+    );
+    setColumnList([...columnList, valueOfColumnFilter]);
+  };
+
+  const deleteAllFilters = () => {
+    setFilterByNumericValues([]);
   };
 
   return (
@@ -79,39 +87,60 @@ function Filters() {
         />
       </form>
 
-      <form onSubmit={ filter }>
-        <select data-testid="column-filter" name="column" onChange={ handleForm }>
-          { columnList.map((column) => (
-            <option key={ column } value={ column }>{ column }</option>)) }
+      <form>
+        <select
+          data-testid="column-filter"
+          name="column"
+          onChange={ ({ target }) => { setColumn(target.value); } }
+        >
+          { columnList.map((columnName) => (
+            <option key={ columnName } value={ columnName }>{ columnName }</option>)) }
         </select>
 
         <select
           data-testid="comparison-filter"
           name="comparison"
-          onChange={ handleForm }
+          onChange={ ({ target }) => { setComparison(target.value); } }
         >
-          { RANGE.map((column) => <option key={ column }>{ column }</option>) }
+          { RANGE.map((comparisonName) => (
+            <option key={ comparisonName }>{ comparisonName }</option>)) }
         </select>
 
         <input
           type="number"
           data-testid="value-filter"
           name="value"
-          value={ filterByNumeric.filterByNumericValues[0].value }
-          onChange={ handleForm }
+          value={ value }
+          onChange={ ({ target }) => { setValue(target.value); } }
         />
         <button
           type="submit"
           data-testid="button-filter"
+          onClick={ filter }
         >
           Filtrar
         </button>
       </form>
-      { listOfFilters.map((filterList, index) => (
-        <div key={ index }>
+      { filterByNumericValues.map((filterList, index) => (
+        <div key={ index } data-testid="filter">
           {`${filterList.column} ${filterList.comparison} ${filterList.value}` }
+          <button
+            type="button"
+            value={ filterList.column }
+            onClick={ ({ target }) => handleDeleteFilter(index, target.value) }
+          >
+            excluir filtro
+          </button>
         </div>
       )) }
+
+      <button
+        type="button"
+        onClick={ deleteAllFilters }
+        data-testid="button-remove-filters"
+      >
+        Excluir todos os filtros
+      </button>
     </section>
   );
 }
