@@ -2,9 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Filters() {
-  const COLUMN_LIST = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-
   const RANGE = ['maior que', 'menor que', 'igual a'];
 
   const { filterByName: { name },
@@ -17,6 +14,8 @@ function Filters() {
     setIsFilterByNumeric,
     listOfFilters,
     setListOfFilters,
+    columnList,
+    setColumnList,
     data } = useContext(PlanetsContext);
 
   useEffect(() => {
@@ -65,6 +64,7 @@ function Filters() {
     setIsFilterByNumeric(true);
     const { column, comparison, value } = filterByNumeric.filterByNumericValues[0];
     setListOfFilters([...listOfFilters, { column, comparison, value }]);
+    setColumnList(columnList.filter((columnName) => columnName !== column));
   };
 
   return (
@@ -81,7 +81,8 @@ function Filters() {
 
       <form onSubmit={ filter }>
         <select data-testid="column-filter" name="column" onChange={ handleForm }>
-          { COLUMN_LIST.map((column) => <option key={ column }>{ column }</option>) }
+          { columnList.map((column) => (
+            <option key={ column } value={ column }>{ column }</option>)) }
         </select>
 
         <select

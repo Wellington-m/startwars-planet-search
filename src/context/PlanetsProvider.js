@@ -19,6 +19,9 @@ function PlanetsProvider({ children }) {
     ],
   });
   const [listOfFilters, setListOfFilters] = useState([]);
+  const [columnList, setColumnList] = useState(
+    ['population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'],
+  );
 
   const getPlanet = async () => {
     try {
@@ -52,6 +55,8 @@ function PlanetsProvider({ children }) {
     setIsFilterByNumeric,
     listOfFilters,
     setListOfFilters,
+    columnList,
+    setColumnList,
   };
 
   return (
