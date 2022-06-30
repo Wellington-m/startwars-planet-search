@@ -11,7 +11,7 @@ function Filters() {
     setFilterByName,
     setIsFilterByName,
     setFilteredData,
-    filteredData,
+    // filteredData,
     filterByNumeric,
     setFilterByNumeric,
     setIsFilterByNumeric,
@@ -20,26 +20,27 @@ function Filters() {
     data } = useContext(PlanetsContext);
 
   useEffect(() => {
-    setFilteredData(data.filter((planet) => planet.name.toLowerCase().includes(name)));
+    const planetsFiltered = data
+      .filter((planet) => planet.name.toLowerCase().includes(name));
 
     const resultArray = listOfFilters.reduce((accumulator, filter) => {
       console.log('Acumulador', accumulator);
-      return accumulator.filter((book) => {
+      return accumulator.filter((planet) => {
         switch (filter.comparison) {
         case 'maior que':
-          return Number(book[filter.column]) > Number(filter.value);
+          return Number(planet[filter.column]) > Number(filter.value);
 
         case 'menor que':
-          return Number(book[filter.column]) < Number(filter.value);
+          return Number(planet[filter.column]) < Number(filter.value);
 
         case 'igual a':
-          return Number(book[filter.column]) === Number(filter.value);
+          return Number(planet[filter.column]) === Number(filter.value);
 
         default:
           return true;
         }
       });
-    }, filteredData);
+    }, planetsFiltered);
 
     setFilteredData(resultArray);
   }, [name, listOfFilters]);
