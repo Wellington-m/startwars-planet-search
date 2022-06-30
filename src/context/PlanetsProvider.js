@@ -18,6 +18,7 @@ function PlanetsProvider({ children }) {
       },
     ],
   });
+  const [listOfFilters, setListOfFilters] = useState([]);
 
   const getPlanet = async () => {
     try {
@@ -49,6 +50,8 @@ function PlanetsProvider({ children }) {
     setFilterByNumeric,
     isFilterByNumeric,
     setIsFilterByNumeric,
+    listOfFilters,
+    setListOfFilters,
   };
 
   return (

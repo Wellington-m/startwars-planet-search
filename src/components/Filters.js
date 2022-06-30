@@ -10,20 +10,43 @@ function Filters() {
   const { filterByName: { name },
     setFilterByName,
     setIsFilterByName,
-    filteredData,
     setFilteredData,
+    filteredData,
     filterByNumeric,
     setFilterByNumeric,
     setIsFilterByNumeric,
+    listOfFilters,
+    setListOfFilters,
     data } = useContext(PlanetsContext);
 
   useEffect(() => {
     setFilteredData(data.filter((planet) => planet.name.toLowerCase().includes(name)));
-  }, [name]);
+
+    const resultArray = listOfFilters.reduce((accumulator, filter) => {
+      console.log('Acumulador', accumulator);
+      return accumulator.filter((book) => {
+        switch (filter.comparison) {
+        case 'maior que':
+          return Number(book[filter.column]) > Number(filter.value);
+
+        case 'menor que':
+          return Number(book[filter.column]) < Number(filter.value);
+
+        case 'igual a':
+          return Number(book[filter.column]) === Number(filter.value);
+
+        default:
+          return true;
+        }
+      });
+    }, filteredData);
+
+    setFilteredData(resultArray);
+  }, [name, listOfFilters]);
 
   const handleSearch = ({ target }) => {
     setIsFilterByName(true);
-    setFilterByName({ name: target.value });
+    setFilterByName({ name: target.value.toLowerCase() });
   };
 
   const handleForm = ({ target }) => {
@@ -37,31 +60,11 @@ function Filters() {
   };
 
   const filter = (element) => {
-    setIsFilterByNumeric(true);
     element.preventDefault();
+    setIsFilterByNumeric(true);
     const { column, comparison, value } = filterByNumeric.filterByNumericValues[0];
-
-    switch (comparison) {
-    case 'maior que': {
-      const filtered = data.filter((planet) => Number(planet[column]) > Number(value));
-      setFilteredData(filtered); }
-      break;
-
-    case 'menor que': {
-      const filtered = data.filter((planet) => Number(planet[column]) < Number(value));
-      setFilteredData(filtered); }
-      break;
-
-    case 'igual a': {
-      const filtered = data.filter((planet) => Number(planet[column]) === Number(value));
-      setFilteredData(filtered); }
-      break;
-
-    default:
-      break;
-    }
+    setListOfFilters([...listOfFilters, { column, comparison, value }]);
   };
-  console.log(filteredData);
 
   return (
     <section>
@@ -102,7 +105,11 @@ function Filters() {
           Filtrar
         </button>
       </form>
-
+      { listOfFilters.map((filterList, index) => (
+        <div key={ index }>
+          {`${filterList.column} ${filterList.comparison} ${filterList.value}` }
+        </div>
+      )) }
     </section>
   );
 }
