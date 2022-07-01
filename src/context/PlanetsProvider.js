@@ -16,13 +16,25 @@ function PlanetsProvider({ children }) {
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValue] = useState('0');
+  const [order, setOrder] = useState({
+    column: '',
+    sort: '',
+  });
+  const [columnOrderName, setColumnOrderName] = useState('');
+  const [sort, setSort] = useState('');
 
   const getPlanet = async () => {
     try {
       const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/?format=json');
       const requestJson = await request.json();
+      const sortedData = requestJson.results.sort((a, b) => {
+        const NUMBER = 1;
+        if (a.name < b.name) return -NUMBER;
+        if (a.name > b.name) return NUMBER;
+        return 0;
+      });
       setData(
-        requestJson.results,
+        sortedData,
       );
       setFilteredData(
         requestJson.results,
@@ -55,6 +67,12 @@ function PlanetsProvider({ children }) {
     setComparison,
     value,
     setValue,
+    order,
+    setOrder,
+    columnOrderName,
+    setColumnOrderName,
+    sort,
+    setSort,
   };
 
   return (

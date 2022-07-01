@@ -3,6 +3,8 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function Filters() {
   const RANGE = ['maior que', 'menor que', 'igual a'];
+  const COLUMN_LIST_ORDER = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
 
   const { filterByName: { name },
     setFilterByName,
@@ -19,11 +21,27 @@ function Filters() {
     setComparison,
     value,
     setValue,
+    order,
+    setOrder,
+    columnOrderName,
+    setColumnOrderName,
+    sort,
+    setSort,
     data } = useContext(PlanetsContext);
 
   useEffect(() => {
     const planetsFiltered = data
-      .filter((planet) => planet.name.toLowerCase().includes(name));
+      .filter((planet) => planet.name.toLowerCase().includes(name)
+      && planet[order.column] !== 'unknown');
+
+    const unknownPlanets = data
+      .filter((planet) => planet[order.column] === 'unknown');
+
+    if (order.sort === 'ASC') {
+      planetsFiltered.sort((a, b) => a[order.column] - b[order.column]);
+    } else if (order.sort === 'DESC') {
+      planetsFiltered.sort((a, b) => b[order.column] - a[order.column]);
+    }
 
     const resultArray = filterByNumericValues.reduce((accumulator, filter) => {
       console.log('Acumulador', accumulator);
@@ -44,8 +62,8 @@ function Filters() {
       });
     }, planetsFiltered);
 
-    setFilteredData(resultArray);
-  }, [name, filterByNumericValues]);
+    setFilteredData([...resultArray, ...unknownPlanets]);
+  }, [name, filterByNumericValues, order]);
 
   const handleSearch = ({ target }) => {
     setIsFilterByName(true);
@@ -73,6 +91,18 @@ function Filters() {
 
   const deleteAllFilters = () => {
     setFilterByNumericValues([]);
+  };
+
+  const handleOrder = () => {
+    setOrder({
+      column: columnOrderName,
+      sort,
+    });
+  };
+
+  const handleOrderInputs = ({ target }) => {
+    const { value: valueInput } = target;
+    setSort(valueInput);
   };
 
   return (
@@ -141,6 +171,58 @@ function Filters() {
       >
         Excluir todos os filtros
       </button>
+
+      <section className="ordenar">
+        <label htmlFor="order">
+          Ordenar
+          <select
+            id="order"
+            data-testid="column-sort"
+            onChange={ ({ target }) => setColumnOrderName(target.value) }
+          >
+            { COLUMN_LIST_ORDER.map((columnOrder) => (
+              <option
+                key={ columnOrder }
+                value={ columnOrder }
+              >
+                { columnOrder }
+              </option>
+            )) }
+          </select>
+        </label>
+
+        <label htmlFor="ascendente">
+          Ascendente
+          <input
+            data-testid="column-sort-input-asc"
+            type="radio"
+            id="ascendente"
+            name="sort"
+            value="ASC"
+            onClick={ handleOrderInputs }
+          />
+        </label>
+
+        <label htmlFor="descendente">
+          Descendente
+          <input
+            data-testid="column-sort-input-desc"
+            type="radio"
+            id="descendente"
+            name="sort"
+            value="DESC"
+            onClick={ handleOrderInputs }
+          />
+        </label>
+
+        <button
+          type="button"
+          data-testid="column-sort-button"
+          onClick={ handleOrder }
+        >
+          Ordenar
+        </button>
+      </section>
     </section>
   );
 }

@@ -6,9 +6,10 @@ function Table() {
   const {
     getPlanet,
     data,
-    isFilterByName,
+    // isFilterByName,
     filteredData,
-    isFilterByNumeric } = useContext(PlanetsContext);
+    // isFilterByNumeric,
+  } = useContext(PlanetsContext);
 
   useEffect(() => {
     getPlanet();
@@ -24,13 +25,6 @@ function Table() {
     finalTitles = TITLES_TO_UPPERCASE.map((title) => title.replace('_', ' '));
   }
 
-  let planets = [];
-  if (isFilterByName || isFilterByNumeric) {
-    planets = [...filteredData];
-  } else {
-    planets = [...data];
-  }
-
   return (
     <table>
       <thead>
@@ -41,9 +35,9 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planets.length > 0 && planets.map((planet) => (
+        { filteredData.length > 0 && filteredData.map((planet) => (
           <tr key={ planet.name }>
-            <td>{ planet.name }</td>
+            <td data-testid="planet-name">{ planet.name }</td>
             <td>{ planet.rotation_period }</td>
             <td>{ planet.orbital_period }</td>
             <td>{ planet.diameter }</td>
