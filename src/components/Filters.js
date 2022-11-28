@@ -8,9 +8,7 @@ function Filters() {
 
   const { filterByName: { name },
     setFilterByName,
-    setIsFilterByName,
     setFilteredData,
-    setIsFilterByNumeric,
     filterByNumericValues,
     setFilterByNumericValues,
     columnList,
@@ -66,13 +64,11 @@ function Filters() {
   }, [name, filterByNumericValues, order]);
 
   const handleSearch = ({ target }) => {
-    setIsFilterByName(true);
     setFilterByName({ name: target.value.toLowerCase() });
   };
 
   const filter = (element) => {
     element.preventDefault();
-    setIsFilterByNumeric(true);
     const newFilter = {
       column,
       comparison,

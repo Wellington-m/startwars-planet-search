@@ -6,9 +6,7 @@ function Table() {
   const {
     getPlanet,
     data,
-    // isFilterByName,
     filteredData,
-    // isFilterByNumeric,
   } = useContext(PlanetsContext);
 
   useEffect(() => {
