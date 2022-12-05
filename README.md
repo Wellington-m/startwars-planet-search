@@ -17,6 +17,6 @@
   * O _React Hook useState_;
   * O _React Hook useContext_;
   * O _React Hook useEffect_;
-  * O _React Hooks_ customizados.
+  * _React Hooks_ customizados.
   * O _styled-components_ para estilização.
 </details>
