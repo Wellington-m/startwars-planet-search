@@ -1,5 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import {
+  FormStyled,
+  ButtonStyled,
+  FilterAndOrderStyle,
+  MainSectionStyle } from './Style';
 
 function Filters() {
   const RANGE = ['maior que', 'menor que', 'igual a'];
@@ -102,18 +107,18 @@ function Filters() {
   };
 
   return (
-    <section>
+    <MainSectionStyle>
 
-      <form>
+      <FormStyled>
         <input
           type="text"
           placeholder="Planet Search"
           onChange={ handleSearch }
           data-testid="name-filter"
         />
-      </form>
+      </FormStyled>
 
-      <form>
+      <FilterAndOrderStyle>
         <select
           data-testid="column-filter"
           name="column"
@@ -139,14 +144,14 @@ function Filters() {
           value={ value }
           onChange={ ({ target }) => { setValue(target.value); } }
         />
-        <button
+        <ButtonStyled
           type="submit"
           data-testid="button-filter"
           onClick={ filter }
         >
           Filtrar
-        </button>
-      </form>
+        </ButtonStyled>
+      </FilterAndOrderStyle>
       { filterByNumericValues.map((filterList, index) => (
         <div key={ index } data-testid="filter">
           {`${filterList.column} ${filterList.comparison} ${filterList.value}` }
@@ -160,15 +165,16 @@ function Filters() {
         </div>
       )) }
 
-      <button
+      <ButtonStyled
         type="button"
         onClick={ deleteAllFilters }
         data-testid="button-remove-filters"
+        margin="10px"
       >
         Excluir todos os filtros
-      </button>
+      </ButtonStyled>
 
-      <section className="ordenar">
+      <FilterAndOrderStyle className="ordenar">
         <label htmlFor="order">
           Ordenar
           <select
@@ -211,15 +217,15 @@ function Filters() {
           />
         </label>
 
-        <button
+        <ButtonStyled
           type="button"
           data-testid="column-sort-button"
           onClick={ handleOrder }
         >
           Ordenar
-        </button>
-      </section>
-    </section>
+        </ButtonStyled>
+      </FilterAndOrderStyle>
+    </MainSectionStyle>
   );
 }
 
