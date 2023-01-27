@@ -8,7 +8,7 @@ Este projeto trata-se de uma aplicação front-end na qual usa uma lista de plan
 ## Rodando a aplicação localmente via docker
 * Clone o projeto ```git clone git@github.com:Wellington-m/startwars-planet-search.git```.
 * Entre na pasta ```cd startwars-planet-search```.
-* Crie a imagem docker ```docker build -t planetsearch```.
+* Crie a imagem docker ```docker build -t planetsearch .```.
 * Inicie o container ```docker run --name project_planet_search -p 3000:3000 -d planetsearch```.
 
 
