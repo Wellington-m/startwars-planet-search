@@ -10,6 +10,7 @@ Este projeto trata-se de uma aplicação front-end na qual usa uma lista de plan
 * Entre na pasta ```cd startwars-planet-search```
 * Crie a imagem docker ```docker build -t planetsearch .```
 * Inicie o container ```docker run --name project_planet_search -p 3000:3000 -d planetsearch```
+* Abra o navegador e entre no endereço http://localhost:3000/
 
 
 ## Nesse projeto, foi utilizado:
