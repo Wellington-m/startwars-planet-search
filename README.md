@@ -6,7 +6,7 @@ Este projeto trata-se de uma aplicação front-end na qual usa uma lista de plan
 
 
 ## Rodando a aplicação localmente via docker
-* Clone o projeto ```bash git clone ```.
+* Clone o projeto ```bash git clone git@github.com:Wellington-m/startwars-planet-search.git```.
 * Entre na pasta ```bash cd startwars-planet-search ```.
 
 
