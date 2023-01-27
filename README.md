@@ -5,6 +5,12 @@
 Este projeto trata-se de uma aplicação front-end na qual usa uma lista de planetas do universo de Star Wars, e a aplicação de filtros na mesma, utilizando **Context API e Hooks** para controlar os estados globais.
 
 
+## Rodando a aplicação localmente via docker
+* Clone o projeto ```bash git clone ```.
+* Entre na pasta ```bash cd startwars-planet-search ```.
+
+
+
 ## Nesse projeto, foi utilizado:
 
   * A _Context API_ do **React** para gerenciar estado.
