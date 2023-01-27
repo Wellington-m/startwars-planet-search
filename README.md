@@ -1,8 +1,8 @@
 # Boas-vindas ao projeto Star Wars Planets Search!
 
 
-#H1 header Descrição 
-  Foi desenvolvido uma lista com filtros de planetas do universo de Star Wars usando **Context API e Hooks** para controlar os estados globais.
+# Descrição
+Este projeto trata-se de uma aplicação front-end na qual usa uma lista de planetas do universo de Star Wars, e a aplicação de filtros na mesma usando **Context API e Hooks** para controlar os estados globais.
 
 
 
