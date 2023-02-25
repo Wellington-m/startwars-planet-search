@@ -25,9 +25,9 @@ function PlanetsProvider({ children }) {
 
   const getPlanet = async () => {
     try {
-      const request = await fetch('https://swapi-trybe.herokuapp.com/api/planets/?format=json');
+      const request = await fetch('http://localhost:3001/results');
       const requestJson = await request.json();
-      const sortedData = requestJson.results.sort((a, b) => {
+      const sortedData = requestJson.sort((a, b) => {
         const NUMBER = 1;
         if (a.name < b.name) return -NUMBER;
         if (a.name > b.name) return NUMBER;
@@ -37,7 +37,7 @@ function PlanetsProvider({ children }) {
         sortedData,
       );
       setFilteredData(
-        requestJson.results,
+        requestJson,
       );
     } catch (e) {
       setError(e.message);
