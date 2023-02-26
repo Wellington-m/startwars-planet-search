@@ -25,7 +25,7 @@ function PlanetsProvider({ children }) {
 
   const getPlanet = async () => {
     try {
-      const request = await fetch('http://localhost:3001/results');
+      const request = await fetch('https://starwars-planets-data.vercel.app/results');
       const requestJson = await request.json();
       const sortedData = requestJson.sort((a, b) => {
         const NUMBER = 1;
