@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes, { shape } from 'prop-types';
 import { DivTableStyle } from './Style';
 
-function Table({ data = null, columns = null }) {
+function Table({ data = null, columns = null, hover = true, striped = true }) {
   const getCaps = (head, field) => {
     if (head) return head.toUpperCase();
     return field.toUpperCase();
@@ -34,7 +34,10 @@ function Table({ data = null, columns = null }) {
         </thead>
         <tbody>
           { data && data.map((row) => (
-            <tr key={ row.name }>
+            <tr
+              key={ row.name }
+              className={ `${hover && 'hover'} ${striped && 'striped'}` }
+            >
               {columns.map((col) => (
                 <td key={ row[col.field] }>{ iterator(row[col.field]) }</td>
               ))}
@@ -51,6 +54,13 @@ function Table({ data = null, columns = null }) {
 Table.propTypes = {
   data: PropTypes.arrayOf(shape).isRequired,
   columns: PropTypes.arrayOf(shape).isRequired,
+  hover: PropTypes.bool,
+  striped: PropTypes.bool,
+};
+
+Table.defaultProps = {
+  hover: true,
+  striped: true,
 };
 
 export default Table;

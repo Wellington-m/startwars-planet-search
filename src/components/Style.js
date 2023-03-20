@@ -55,13 +55,26 @@ const MainSectionStyle = styled.section`
 `;
 
 const DivTableStyle = styled.div`
-  max-width: 95%;
+  table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
   overflow: scroll;
-  table, td, th, tfoot { 
-    border: solid 1px black;
-    padding: 5px;
+  td, th { 
+    border-bottom:1px #dddddd solid;
+    text-align: left;
+    padding: 8px;
   }
   th { background-color: #999; }
+  
+  .striped:nth-child(even){
+    background-color: #dddddd;
+  }
+
+  .hover:hover{
+    background-color: #61dafb;
+  }
 `;
 
 export {
