@@ -1,66 +1,56 @@
-import React, { useContext, useEffect } from 'react';
-import PlanetsContext from '../context/PlanetsContext';
+import React from 'react';
+import PropTypes, { shape } from 'prop-types';
 import { DivTableStyle } from './Style';
 
-function Table() {
-  const {
-    getPlanet,
-    data,
-    filteredData,
-  } = useContext(PlanetsContext);
+function Table({ data = null, columns = null }) {
+  const getCaps = (head, field) => {
+    if (head) return head.toUpperCase();
+    return field.toUpperCase();
+  };
 
-  useEffect(() => {
-    getPlanet();
-  }, []);
+  const iterator = (list) => {
+    if (typeof list === 'object') {
+      return (
+        <ul>
+          { list.map((film) => (
+            <li key={ film }>{ film }</li>
+          )) }
+        </ul>
+      );
+    }
 
-  let finalTitles = [];
-  if (data.length > 0) {
-    const TITLES = Object.keys(data[0]).filter((title) => title !== 'residents');
-
-    const TITLES_TO_UPPERCASE = TITLES
-      .map((title) => title[0].toUpperCase() + title.substring(1));
-
-    finalTitles = TITLES_TO_UPPERCASE.map((title) => title.replace('_', ' '));
-  }
+    return (list);
+  };
 
   return (
     <DivTableStyle>
       <table>
         <thead>
           <tr>
-            { finalTitles.length > 0 && finalTitles.map((title) => (
-              <th key={ title }>{ title }</th>
+            { columns && columns.map((head) => (
+              <th key={ head.field }>{ getCaps(head.header, head.field) }</th>
             )) }
           </tr>
         </thead>
         <tbody>
-          { filteredData.length > 0 && filteredData.map((planet) => (
-            <tr key={ planet.name }>
-              <td data-testid="planet-name">{ planet.name }</td>
-              <td>{ planet.rotation_period }</td>
-              <td>{ planet.orbital_period }</td>
-              <td>{ planet.diameter }</td>
-              <td>{ planet.climate }</td>
-              <td>{ planet.gravity }</td>
-              <td>{ planet.terrain }</td>
-              <td>{ planet.surface_water }</td>
-              <td>{ planet.population }</td>
-              <td>
-                <ul>
-                  { planet.films.map((film) => (
-                    <li key={ film }>{ film }</li>
-                  )) }
-                </ul>
-              </td>
-              <td>{ planet.created }</td>
-              <td>{ planet.edited }</td>
-              <td>{ planet.url }</td>
+          { data && data.map((row) => (
+            <tr key={ row.name }>
+              {columns.map((col) => (
+                <td key={ row[col.field] }>{ iterator(row[col.field]) }</td>
+              ))}
             </tr>
           )) }
         </tbody>
       </table>
+
+      { data ? null : <p>Nada para mostrar aqui :)</p> }
     </DivTableStyle>
   );
 }
+
+Table.propTypes = {
+  data: PropTypes.arrayOf(shape).isRequired,
+  columns: PropTypes.arrayOf(shape).isRequired,
+};
 
 export default Table;
