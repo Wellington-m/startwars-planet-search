@@ -3,7 +3,9 @@ import PlanetsContext from '../context/PlanetsContext';
 import {
   FormStyled,
   ButtonStyled,
-  FilterAndOrderStyle,
+  FilterStyle,
+  OrderStyle,
+  OrderButtom,
   MainSectionStyle } from './Style';
 
 function Filters() {
@@ -47,7 +49,7 @@ function Filters() {
     }
 
     const resultArray = filterByNumericValues.reduce((accumulator, filter) => {
-      console.log('Acumulador', accumulator);
+      console.log('Acumulador', filter);
       return accumulator.filter((planet) => {
         switch (filter.comparison) {
         case 'maior que':
@@ -74,6 +76,7 @@ function Filters() {
 
   const filter = (element) => {
     element.preventDefault();
+    console.log(column);
     const newFilter = {
       column,
       comparison,
@@ -107,74 +110,75 @@ function Filters() {
   };
 
   return (
-    <MainSectionStyle>
+    <>
+      <MainSectionStyle>
+        <FormStyled>
+          <input
+            type="text"
+            placeholder="Planet Search"
+            onChange={ handleSearch }
+            data-testid="name-filter"
+          />
+        </FormStyled>
 
-      <FormStyled>
-        <input
-          type="text"
-          placeholder="Planet Search"
-          onChange={ handleSearch }
-          data-testid="name-filter"
-        />
-      </FormStyled>
-
-      <FilterAndOrderStyle>
-        <select
-          data-testid="column-filter"
-          name="column"
-          onChange={ ({ target }) => { setColumn(target.value); } }
-        >
-          { columnList.map((columnName) => (
-            <option key={ columnName } value={ columnName }>{ columnName }</option>)) }
-        </select>
-
-        <select
-          data-testid="comparison-filter"
-          name="comparison"
-          onChange={ ({ target }) => { setComparison(target.value); } }
-        >
-          { RANGE.map((comparisonName) => (
-            <option key={ comparisonName }>{ comparisonName }</option>)) }
-        </select>
-
-        <input
-          type="number"
-          data-testid="value-filter"
-          name="value"
-          value={ value }
-          onChange={ ({ target }) => { setValue(target.value); } }
-        />
-        <ButtonStyled
-          type="submit"
-          data-testid="button-filter"
-          onClick={ filter }
-        >
-          Filtrar
-        </ButtonStyled>
-      </FilterAndOrderStyle>
-      { filterByNumericValues.map((filterList, index) => (
-        <div key={ index } data-testid="filter">
-          {`${filterList.column} ${filterList.comparison} ${filterList.value}` }
-          <button
-            type="button"
-            value={ filterList.column }
-            onClick={ ({ target }) => handleDeleteFilter(index, target.value) }
+        <FilterStyle>
+          <select
+            data-testid="column-filter"
+            name="column"
+            onChange={ ({ target }) => { setColumn(target.value); } }
           >
-            excluir filtro
-          </button>
-        </div>
-      )) }
+            { columnList.map((columnName) => (
+              <option key={ columnName } value={ columnName }>{ columnName }</option>)) }
+          </select>
 
-      <ButtonStyled
-        type="button"
-        onClick={ deleteAllFilters }
-        data-testid="button-remove-filters"
-        margin="10px"
-      >
-        Excluir todos os filtros
-      </ButtonStyled>
+          <select
+            data-testid="comparison-filter"
+            name="comparison"
+            onChange={ ({ target }) => { setComparison(target.value); } }
+          >
+            { RANGE.map((comparisonName) => (
+              <option key={ comparisonName }>{ comparisonName }</option>)) }
+          </select>
 
-      <FilterAndOrderStyle className="ordenar">
+          <input
+            type="number"
+            data-testid="value-filter"
+            name="value"
+            value={ value }
+            onChange={ ({ target }) => { setValue(target.value); } }
+          />
+          <ButtonStyled
+            type="submit"
+            data-testid="button-filter"
+            onClick={ filter }
+          >
+            Filtrar
+          </ButtonStyled>
+        </FilterStyle>
+        { filterByNumericValues.map((filterList, index) => (
+          <div key={ index } data-testid="filter">
+            {`${filterList.column} ${filterList.comparison} ${filterList.value}` }
+            <button
+              type="button"
+              value={ filterList.column }
+              onClick={ ({ target }) => handleDeleteFilter(index, target.value) }
+            >
+              excluir filtro
+            </button>
+          </div>
+        )) }
+
+        <ButtonStyled
+          type="button"
+          onClick={ deleteAllFilters }
+          data-testid="button-remove-filters"
+          margin="10px"
+        >
+          Excluir todos os filtros
+        </ButtonStyled>
+      </MainSectionStyle>
+
+      <OrderStyle className="ordenar">
         <label htmlFor="order">
           Ordenar
           <select
@@ -217,15 +221,15 @@ function Filters() {
           />
         </label>
 
-        <ButtonStyled
+        <OrderButtom
           type="button"
           data-testid="column-sort-button"
           onClick={ handleOrder }
         >
           Ordenar
-        </ButtonStyled>
-      </FilterAndOrderStyle>
-    </MainSectionStyle>
+        </OrderButtom>
+      </OrderStyle>
+    </>
   );
 }
 
